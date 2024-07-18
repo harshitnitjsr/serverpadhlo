@@ -24,7 +24,13 @@ exports.app.use((0, cookie_parser_1.default)());
 // cors => cross origin resource sharing
 // origin: process.env.ORIGIN,
 exports.app.use((0, cors_1.default)({
-    origin: ["http://localhost:3001"],
+    origin: [
+        "https://main--padhlo.netlify.app",
+        "http://localhost:3001",
+        "https://frontend-padhlo.onrender.com",
+        "https://padhlo.netlify.app",
+        "https://frontend-padhlo.vercel.app",
+    ],
     credentials: true,
 }));
 // app.use(cors({ origin: process.env.ORIGIN, credentials: true, }))

@@ -134,6 +134,7 @@ exports.updateAccessToken = (0, catchAsyncError_1.CatchAsyncError)(async (req, r
     try {
         const refresh_token = req.cookies.refresh_token;
         const decoded = jsonwebtoken_1.default.verify(refresh_token, process.env.REFRESH_TOKEN);
+        console.log(decoded);
         console.log("update access token chal rah");
         const message = "Could not refresh token";
         if (!decoded) {
@@ -143,6 +144,7 @@ exports.updateAccessToken = (0, catchAsyncError_1.CatchAsyncError)(async (req, r
         if (!session) {
             return next(new ErrorHandler_1.default("Please login for access this resources!", 400));
         }
+        console.log(session);
         const user = JSON.parse(session);
         const accessToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.ACCESS_TOKEN, {
             expiresIn: "5m",
@@ -150,9 +152,11 @@ exports.updateAccessToken = (0, catchAsyncError_1.CatchAsyncError)(async (req, r
         const refreshToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.REFRESH_TOKEN, {
             expiresIn: "3d",
         });
+        console.log("token refresheed");
         req.user = user;
         res.cookie("access_token", accessToken, jwt_1.accessTokenOptions);
         res.cookie("refresh_token", refreshToken, jwt_1.refreshTokenOptions);
+        console.log("token set");
         await redis_1.redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
         console.log("updated access token");
         // res.json({

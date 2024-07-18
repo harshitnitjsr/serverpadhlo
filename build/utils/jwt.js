@@ -26,9 +26,9 @@ const sendToken = (user, statusCode, res) => {
     const refreshToken = user.SignRefreshToken();
     // upload session to redis
     redis_1.redis.set(user._id, JSON.stringify(user));
-    if (process.env.NODE_ENV !== "development") {
-        exports.accessTokenOptions.secure = true;
-    }
+    // if (process.env.NODE_ENV !== "development") {
+    //   accessTokenOptions.secure = true;
+    // }
     res.cookie("access_token", accessToken, exports.accessTokenOptions);
     res.cookie("refresh_token", refreshToken, exports.refreshTokenOptions);
     res.status(statusCode).json({
