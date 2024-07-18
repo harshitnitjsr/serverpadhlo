@@ -200,7 +200,7 @@ export const logoutUser = CatchAsyncError(
 export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const refresh_token = req.cookies.refresh_token as string;
+      const refresh_token = req.cookies.refresh_token;
       const decoded = jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN as string
@@ -217,7 +217,7 @@ export const updateAccessToken = CatchAsyncError(
           new ErrorHandler("Please login for access this resources!", 400)
         );
       }
-
+      console.log(session);
       const user = JSON.parse(session);
 
       const accessToken = jwt.sign(
@@ -235,11 +235,13 @@ export const updateAccessToken = CatchAsyncError(
           expiresIn: "3d",
         }
       );
+      console.log("token refresheed");
 
       req.user = user;
 
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
+      console.log("token set");
 
       await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
       console.log("updated access token");
