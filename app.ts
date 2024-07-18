@@ -22,7 +22,13 @@ app.use(cookieParser());
 // origin: process.env.ORIGIN,
 app.use(
   cors({
-    origin: ["https://main--padhlo.netlify.app", "http://localhost:3001"],
+    origin: [
+      "https://main--padhlo.netlify.app",
+      "http://localhost:3001",
+      "https://frontend-padhlo.onrender.com",
+      "https://padhlo.netlify.app",
+      "https://frontend-padhlo.vercel.app",
+    ],
     credentials: true,
   })
 );
